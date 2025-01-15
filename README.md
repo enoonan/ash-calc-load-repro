@@ -1,4 +1,26 @@
-# Calculation Relation Issue Reproduction
+# Calculation Relation Issue Reproductions
+
+## Issue #2
+In this issue, the following calculation `load/3` function doesn't load the `scan: [:url]` field as configured:
+
+```elixir
+  @impl true
+  def load(_, _, _),
+    do: [
+      :url,
+      :query_str,
+      issues: [
+        :id,
+        :state,
+        scan: [:url]
+      ],
+      page: [site: [approved_issues: [:state]]]
+    ]
+```
+
+The calculation is located in the [categorizer_calculation.ex](lib/calc_rel/domain/scan/categorizer_calculation.ex) and the failing test is located in [calc_rel_test.exs](test/calc_rel_test.exs).
+
+## Issue #1
 
 This minimally reproduces an issue wherein an error gets thrown when loading ... too many things? 
 
