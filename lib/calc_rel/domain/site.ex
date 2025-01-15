@@ -1,5 +1,5 @@
 defmodule CalcRel.Domain.Site do
-  use Ash.Resource, domain: CalcRel.Domain, extensions: [AshPostgres.DataLayer]
+  use Ash.Resource, domain: CalcRel.Domain, data_layer: AshPostgres.DataLayer
 
   postgres do
     repo CalcRel.Repo

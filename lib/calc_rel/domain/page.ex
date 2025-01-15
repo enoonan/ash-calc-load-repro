@@ -1,5 +1,5 @@
 defmodule CalcRel.Domain.Page do
-  use Ash.Resource, domain: CalcRel.Domain, extensions: [AshPostgres.DataLayer]
+  use Ash.Resource, domain: CalcRel.Domain, data_layer: AshPostgres.DataLayer
 
   postgres do
     repo CalcRel.Repo
@@ -15,6 +15,6 @@ defmodule CalcRel.Domain.Page do
   end
 
   relationships do
-    belongs_to :site, CalcRel.Domain.Site
+    belongs_to :site, CalcRel.Domain.Site, public?: true
   end
 end

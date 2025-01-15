@@ -13,6 +13,6 @@ defmodule CalcRel.Domain.Scan.FooCalculation do
 
   @impl true
   def calculate(records, _, _) do
-    records |> Enum.map(& &1)
+    records |> Enum.map(& &1.id)
   end
 end

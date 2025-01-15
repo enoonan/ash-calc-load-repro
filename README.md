@@ -1,21 +1,49 @@
-# CalcRel
+# Calculation Relation Issue Reproduction
 
-**TODO: Add description**
+This minimally reproduces an issue wherein an error gets thrown when loading ... too many things? 
 
-## Installation
+In `test/calc_rel_test.exs`, there is one test and it fails with the error in question. 
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `calc_rel` to your list of dependencies in `mix.exs`:
+Specifically it errors when it tries to load the calculations `[:foo, :bar, :baz]`:
 
-```elixir
-def deps do
-  [
-    {:calc_rel, "~> 0.1.0"}
-  ]
-end
+```elixir    
+  scan |> Ash.load!([:foo, :bar, :baz])
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/calc_rel>.
+If you remove one of the three calculations, it's fine. I.e., loading just `[:foo, :bar]` or just `[:foo, :baz]` or just `[:bar, :baz]` will pass the test. 
 
+The `[:foo, :bar, :baz]` calculations are identical and look like this:
+
+```elixir
+  defmodule CalcRel.Domain.Scan.FooCalculation do
+    use Ash.Resource.Calculation
+
+    @impl true
+    def load(_, _, _),
+      do: [
+        issues: [
+          :id,
+          :state
+        ],
+        page: [site: [approved_issues: [:id, :state]]]
+      ]
+
+    @impl true
+    def calculate(records, _, _) do
+      records |> Enum.map(& &1.id)
+    end
+  end
+
+```
+
+The `site.approved_issues` relationship is defined like this:
+
+```elixir 
+  relationships do
+    has_many :approved_issues, CalcRel.Domain.Issue do
+      no_attributes? true
+      public? true
+      filter expr(scan.page.site_id == parent(id) and state == :approved_sitewide)
+    end
+  end
+```

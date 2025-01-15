@@ -1,5 +1,5 @@
 defmodule CalcRel.Domain.Scan do
-  use Ash.Resource, domain: CalcRel.Domain, extensions: [AshPostgres.DataLayer]
+  use Ash.Resource, domain: CalcRel.Domain, data_layer: AshPostgres.DataLayer
 
   postgres do
     repo CalcRel.Repo
@@ -15,7 +15,8 @@ defmodule CalcRel.Domain.Scan do
   end
 
   relationships do
-    belongs_to :site, CalcRel.Domain.Page
+    belongs_to :page, CalcRel.Domain.Page, public?: true
+    has_many :issues, CalcRel.Domain.Issue, public?: true
   end
 
   calculations do

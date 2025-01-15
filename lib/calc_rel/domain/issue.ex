@@ -1,9 +1,9 @@
 defmodule CalcRel.Domain.Issue do
-  use Ash.Resource, domain: CalcRel.Domain, extensions: [AshPostgres.DataLayer]
+  use Ash.Resource, domain: CalcRel.Domain, data_layer: AshPostgres.DataLayer
 
   postgres do
     repo CalcRel.Repo
-    table "scans"
+    table "issues"
   end
 
   actions do
@@ -18,6 +18,6 @@ defmodule CalcRel.Domain.Issue do
   end
 
   relationships do
-    belongs_to :site, CalcRel.Domain.Scan
+    belongs_to :scan, CalcRel.Domain.Scan, public?: true
   end
 end
