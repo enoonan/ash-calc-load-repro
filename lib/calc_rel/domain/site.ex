@@ -12,6 +12,7 @@ defmodule CalcRel.Domain.Site do
 
   attributes do
     uuid_v7_primary_key :id
+    attribute :domain, :string, public?: true
   end
 
   relationships do

@@ -12,6 +12,7 @@ defmodule CalcRel.Domain.Scan do
 
   attributes do
     uuid_v7_primary_key :id
+    attribute :query_str, :string, public?: true
   end
 
   relationships do
@@ -23,5 +24,11 @@ defmodule CalcRel.Domain.Scan do
     calculate :foo, :string, CalcRel.Domain.Scan.FooCalculation, public?: true
     calculate :bar, :string, CalcRel.Domain.Scan.BarCalculation, public?: true
     calculate :baz, :string, CalcRel.Domain.Scan.BazCalculation, public?: true
+    calculate :categorized_issues, :map, CalcRel.Domain.Scan.CategorizerCalculation, public?: true
+
+    calculate :url,
+              :string,
+              expr(page.site.domain <> page.path <> (query_str || "")),
+              public?: true
   end
 end

@@ -14,7 +14,8 @@ defmodule CalcRel.Domain.Issue do
     uuid_v7_primary_key :id
 
     attribute :state, :atom,
-      constraints: [one_of: [:needs_review, :violation, :approved, :approved_sitewide]]
+      constraints: [one_of: [:needs_review, :violation, :approved, :approved_sitewide]],
+      public?: true
   end
 
   relationships do
